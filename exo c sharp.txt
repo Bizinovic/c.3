@@ -1,0 +1,210 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Labo3exo2
+{
+    public class Créature
+    {
+        private string nom;
+        private int pv;
+        private int pvMax;
+        
+
+        public Créature(string nom,int pv,int pvMax)
+        {
+            Nom = nom;
+            PvMax = pvMax;
+            Pv = pv;
+        }
+
+        public Créature(string nom,int pvMax) : this(nom, pvMax,pvMax)
+        {
+        }
+
+        public Créature() { }
+
+        #region propriété
+        public string Nom
+        {
+            get
+            {
+                return nom;
+            }
+            set
+            {
+                if(nom !=null)
+                {
+                    nom = value;
+                }
+                else
+                {
+                    nom = "<aucun nom>";
+                }
+            }
+        }
+
+        public int Pv
+        {
+            get
+            {
+                return pv;
+            }
+            set
+            {
+                if (pv - value < 0)
+                {
+                    pv = 0;
+                }
+                if (pv > pvMax)
+                {
+                    pv = pvMax;
+                }
+
+            }
+        }
+
+        public double PourcentPV
+        {
+            get
+            {
+                return (pv / pvMax) * 100;
+            }
+
+        }
+        public string Etat
+        {
+            get
+            { string chaine = Nom + "(" + Pv + "/" + pvMax + " : " + PourcentPV.ToString("F2") + "%)";
+                if (PourcentPV == 0)
+                {
+                    chaine += " - MORT";
+                }
+                return chaine;
+            }
+        }
+        public int PvMax
+        {
+            get
+            {
+                return pvMax;
+            }
+            set
+            {
+                if (pvMax < 1)
+                    pvMax = 1;
+            }
+        }
+        #endregion
+
+    }
+}
+
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Labo3exo2
+{
+    public class Familier : PNJ
+    {
+        private string description;
+        private int prix;
+
+        public Familier(string nom, string description, int prix) : base(nom)
+        {
+            Description = description;
+            Prix = prix;
+            Nom = nom;
+        }
+        #region Propriétés
+        public string Description
+        {
+            get
+            { return description; }
+            
+            set
+            { }
+        }
+
+        public int Prix
+        {
+            get
+            {
+                return prix;
+            }
+            set
+            {
+                if (value > 0)
+                {
+                    prix = value;
+                }
+            }
+        }
+        #endregion
+    }
+}
+
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Labo3exo2
+{
+   public class PNJ : Créature
+    {
+        public string faction {get; set;}
+
+        public PNJ(string nom, int pv, string faction) : base(nom,pv)
+        {
+            Nom = nom;
+            Pv = pv;
+            this.faction = faction;
+        }
+        public PNJ(string faction) 
+        {
+            this.faction = faction;
+        }
+
+    }
+}
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Labo3exo2
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            PNJ hubert = new PNJ("Hubert", 15, "commerçants");
+            Familier abu = new Familier("Abu", "un petit singe", 20);
+
+            Console.WriteLine(hubert.Etat);
+            hubert.Pv -= 5;
+            Console.WriteLine(hubert.Etat);
+            hubert.Pv += 10;
+            Console.WriteLine(hubert.Etat);
+            Console.WriteLine(abu.Etat);
+            abu.Pv -= 2;
+            Console.WriteLine(abu.Etat);
+
+            Console.ReadKey();
+        }
+    }
+}
